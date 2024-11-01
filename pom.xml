@@ -14,10 +14,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-<<<<<<< Updated upstream
-=======
-  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -30,7 +26,10 @@
       </plugin>
     </plugins>
   </build>
+<<<<<<< Updated upstream
 
 
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 </project>
