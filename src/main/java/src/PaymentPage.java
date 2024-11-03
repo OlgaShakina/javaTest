@@ -7,18 +7,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class PaymentPage {
 
-    private final WebDriver driver;
-
-    @FindBy(xpath = "//div[contains(@class, 'pay__wrapper')]//h2")
+    @FindBy(xpath = "//div[@class='pay__wrapper']//h2")
     private WebElement blockTitle;
 
     @FindBy(xpath = "//div[contains(@class, 'pay__partners')]//img")
     private List<WebElement> paymentLogos;
 
-    @FindBy(xpath ="//a[@href='/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/']")
+    @FindBy(xpath = "//a[@href='/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/']")
     private WebElement serviceDetailsLink;
 
     @FindBy(xpath = "//div[contains(@class,'input-wrapper')]//input[@class='phone']")
@@ -31,22 +30,25 @@ public class PaymentPage {
     private WebElement emailField;
 
     @FindBy(xpath = "//button[contains(@class,'button button__default')]")
-    private WebElement continueButton;
+    private WebElement clickContinueButton;
 
     @FindBy(xpath = "//li[contains(@class,'select__item')]//p")
     private WebElement serviceDropdown;
 
-    @FindBy(xpath = "//*[@id='cookie-agree']")
+    @FindBy(xpath = "//button[@id='cookie-agree']")
     private WebElement acceptCookiesButton;
 
-    public PaymentPage(WebDriver driver) {
-        this.driver = driver;
+    public PaymentPage(WebDriver driver, List<WebElement> paymentLogos) {
+        this.paymentLogos = paymentLogos;
         PageFactory.initElements(driver, this);
     }
 
     public void acceptCookies() {
-        if (acceptCookiesButton.isDisplayed()) {
-            acceptCookiesButton.click();
+        try {
+            if (acceptCookiesButton.isDisplayed()) {
+                acceptCookiesButton.click();
+            }
+        } catch (NoSuchElementException e) {
         }
     }
 
@@ -71,15 +73,11 @@ public class PaymentPage {
     }
 
     public boolean isContinueButtonEnabled() {
-        return continueButton.isEnabled();
+        return clickContinueButton.isEnabled();
     }
 
     public void clickContinueButton() {
-        continueButton.click();
-    }
-
-    public boolean isConfirmationDisplayed() {
-        return false;
+        clickContinueButton.click();
     }
 
     public void selectServiceType(String service) {
@@ -89,18 +87,10 @@ public class PaymentPage {
         return phoneNumberField.isDisplayed() && amountField.isDisplayed() && emailField.isDisplayed();
     }
 
-    public boolean isPhoneNumberFilled() {
-        return!phoneNumberField.getAttribute("value").isEmpty();
-    }
-
-    public boolean isAmountFilled() {
-        return !amountField.getAttribute("value").isEmpty();
-    }
-
-    public boolean isEmailFilled() {
-        return !emailField.getAttribute("value").isEmpty();
-    }
-
     public void enterPhoneNumber(String number) {
+        phoneNumberField.sendKeys(number);
+    }
+
+    public void closeCookieNotification() {
     }
 }
